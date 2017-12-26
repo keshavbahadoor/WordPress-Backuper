@@ -5,7 +5,10 @@ import dropbox, os
 class BackupDropbox(Backup):
 
     def __init__(self):
-        self.dbx = dropbox.Dropbox('DROPBOX SECURITY STRING HERE')
+        try:
+            self.dbx = dropbox.Dropbox(os.getenv('DROPBOX_OAUTH'))
+        except Exception, e:
+            print 'Error retrieving environment variable {}'.format(e.message)
 
     def backup_directory(self, source_directory, destination_directory):
         """
